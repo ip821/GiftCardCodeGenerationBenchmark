@@ -1,3 +1,5 @@
 GiftCardCodeGenerationBenchmark/bin
 GiftCardCodeGenerationBenchmark/obj
 .idea
+GiftCardCodeGenerationBenchmark/BenchmarkDotNet.Artifacts/results
+GiftCardCodeGenerationBenchmark/BenchmarkDotNet.Artifacts
