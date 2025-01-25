@@ -40,7 +40,7 @@ public class OriginalGenerator
     }
     
     [Benchmark]
-    public unsafe string Generate16_Claude35Haiku()
+    public string Generate16_Claude35Haiku()
     {
         Span<byte> randomBytes = stackalloc byte[16];
         RandomNumberGenerator.Fill(randomBytes);
