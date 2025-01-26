@@ -2,11 +2,14 @@
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using GiftCardCodeGenerationBenchmark;
 
 
 Console.WriteLine(new OriginalGenerator().OriginalGenerate());
 Console.WriteLine(new OriginalGenerator().Generate16_ChatGPT4o());
 Console.WriteLine(new OriginalGenerator().Generate16_Claude35Haiku());
+Console.WriteLine(new OriginalGenerator().Generate16_HP_Claude35Sonnet());
+Console.WriteLine(new OriginalGenerator().Generate16_HP_ChatGPTo1());
 
 _ = BenchmarkRunner.Run<OriginalGenerator>();
 
@@ -14,7 +17,7 @@ public class OriginalGenerator
 {
     private const string ValidChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public string OriginalGenerate()
     {
         var segments = new string[4];
@@ -60,4 +63,32 @@ public class OriginalGenerator
         
         return result.ToString();
     }
+    
+    [Benchmark]
+    public string Generate16_ChatGPTo1()
+    {
+        Span<byte> randomBytes = stackalloc byte[16];
+        RandomNumberGenerator.Fill(randomBytes);
+
+        Span<char> buffer = stackalloc char[19];
+
+        var bufferIndex = 0;
+        for (int i = 0; i < 16; i++)
+        {
+            if (i > 0 && i % 4 == 0)
+            {
+                buffer[bufferIndex++] = '-';
+            }
+
+            buffer[bufferIndex++] = ValidChars[randomBytes[i] % ValidChars.Length];
+        }
+
+        return new string(buffer);
+    }
+
+    [Benchmark]
+    public string Generate16_HP_Claude35Sonnet() => Claude35SonnetHighPerformanceRandomGenerator.Generate();
+    
+    [Benchmark]
+    public string Generate16_HP_ChatGPTo1() => ChatGPTo1HighPerfRandomKeyGenerator.GenerateKey();
 }
