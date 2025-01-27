@@ -11,6 +11,7 @@ Console.WriteLine(new OriginalGenerator().Generate16_ChatGPT4o());
 Console.WriteLine(new OriginalGenerator().Generate16_Claude35Haiku());
 Console.WriteLine(new OriginalGenerator().Generate16_HP_Claude35Sonnet());
 Console.WriteLine(new OriginalGenerator().Generate16_HP_ChatGPTo1());
+Console.WriteLine(new OriginalGenerator().Generate16_HP_ChatGPTo1Secure());
 
 _ = BenchmarkRunner.Run<OriginalGenerator>();
 
@@ -105,4 +106,7 @@ public class OriginalGenerator
 
     [Benchmark]
     public string Generate16_HP_ChatGPTo1() => ChatGPTo1HighPerfRandomKeyGenerator.GenerateKey();
+    
+    [Benchmark]
+    public string Generate16_HP_ChatGPTo1Secure() => ChatGPTo1HighPerfRandomKeyGeneratorSecure.GenerateKey();
 }
